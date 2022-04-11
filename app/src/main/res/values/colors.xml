@@ -10,5 +10,7 @@
     <color name="textColor">#844046</color>
     <color name="colorPrimary">#FFA938</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="backgroundColor">#FFBB86FC</color>
+    <color name="backgroundColor">#AAD688</color>
+    <color name="ageTextBackgroundColor">#7FD6C1</color>
+    <color name="smallText">#75816B</color>
 </resources>
