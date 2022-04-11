@@ -28,14 +28,22 @@ class MainActivity : AppCompatActivity() {
         val day = myCalender.get(Calendar.DAY_OF_MONTH)
 
         DatePickerDialog(this,
-            DatePickerDialog.OnDateSetListener { view, selectedYear, selectedMonth, selectedDayOfMonth ->
+            { view, selectedYear, selectedMonth, selectedDayOfMonth ->
                 Toast.makeText(this,"The Chosen Year is $selectedYear, Month is $selectedMonth, Day is $selectedDayOfMonth",
                     Toast.LENGTH_LONG).show()
                 val selectedDate = "$selectedYear/${selectedMonth+1}/$selectedDayOfMonth"
-                var tvSelectedDate = findViewById<TextView>(R.id.tvSelectedDate)
+                val tvSelectedDate = findViewById<TextView>(R.id.tvSelectedDate)
                 tvSelectedDate.text = selectedDate
                 val sdf = SimpleDateFormat("dd/MM/yyyy",Locale.ENGLISH)
-                val date = sdf.parse(selectedDate)
+                val theDate = sdf.parse(selectedDate)
+                val selectedDateInMinutes = (theDate!!.time / 60000)
+                val currentDate = sdf.parse(sdf.format(System.currentTimeMillis()))
+                val currentDateInMinutes = (currentDate!!.time / 60000)
+
+                val differenceInMinutes =  (currentDateInMinutes - selectedDateInMinutes)
+
+                val tvSelectedDateInMinutes = findViewById<TextView>(R.id.tvSelectedDateInMinutes)
+                tvSelectedDateInMinutes.text = differenceInMinutes.toString()
             },
             year,
             month,
