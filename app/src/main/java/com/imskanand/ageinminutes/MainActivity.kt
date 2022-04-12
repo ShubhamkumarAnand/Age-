@@ -17,7 +17,6 @@ class MainActivity : AppCompatActivity() {
         val btnDatePicker = findViewById<Button>(R.id.btnDatePicker)
         btnDatePicker.setOnClickListener { view ->
             clickDatePicker(view)
-            Toast.makeText(this, "DatePicker Clicked", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -27,26 +26,39 @@ class MainActivity : AppCompatActivity() {
         val month = myCalender.get(Calendar.MONTH)
         val day = myCalender.get(Calendar.DAY_OF_MONTH)
 
-        DatePickerDialog(this,
+        val dpd = DatePickerDialog(this,
             { view, selectedYear, selectedMonth, selectedDayOfMonth ->
-                Toast.makeText(this,"The Chosen Year is $selectedYear, Month is $selectedMonth, Day is $selectedDayOfMonth",
-                    Toast.LENGTH_LONG).show()
-                val selectedDate = "$selectedYear/${selectedMonth+1}/$selectedDayOfMonth"
+                val selectedDate = "$selectedDayOfMonth/${selectedMonth+1}/$selectedYear"
                 val tvSelectedDate = findViewById<TextView>(R.id.tvSelectedDate)
                 tvSelectedDate.text = selectedDate
                 val sdf = SimpleDateFormat("dd/MM/yyyy",Locale.ENGLISH)
                 val theDate = sdf.parse(selectedDate)
                 val selectedDateInMinutes = (theDate!!.time / 60000)
+                val selectedDateInDays = selectedDateInMinutes/ 1440
+                val selectedDateInMonth = selectedDateInDays / 30
+
                 val currentDate = sdf.parse(sdf.format(System.currentTimeMillis()))
                 val currentDateInMinutes = (currentDate!!.time / 60000)
+                val currentDateInDays = currentDateInMinutes / 1440
+                val currentDateInMonth = currentDateInDays / 30
 
                 val differenceInMinutes =  (currentDateInMinutes - selectedDateInMinutes)
+                val differenceInDays = (currentDateInDays - selectedDateInDays)
+                val differenceInMonth = currentDateInMonth - selectedDateInMonth
 
                 val tvSelectedDateInMinutes = findViewById<TextView>(R.id.tvSelectedDateInMinutes)
                 tvSelectedDateInMinutes.text = differenceInMinutes.toString()
+
+                val tvSelectedDateInDays = findViewById<TextView>(R.id.tvSelectedDateInDays)
+                tvSelectedDateInDays.text = differenceInDays.toString()
+
+                val tvSelectedDateInMonth = findViewById<TextView>(R.id.tvSelectedDateInMonth)
+                tvSelectedDateInMonth.text = differenceInMonth.toString()
             },
             year,
             month,
-            day).show()
+            day)
+        dpd.datePicker.setMaxDate(Date().time - 86400000)
+        dpd.show()
     }
 }
